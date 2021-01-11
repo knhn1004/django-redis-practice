@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    # env_file: app.env
+    # restart: always
+    # depends_on:
+      # - db
+# 
+  # db:
+    # image: postgres:10-alpine
+    # env_file: db.env
+  
+  cache:
+    image: redis
+    ports:
+      - "6379:6399"
+    volumes:
+      - django-redis-test:/data
+    entrypoint: redis-server --appendonly yes
+    restart: always
+
+volumes:
+  django-redis-test:
